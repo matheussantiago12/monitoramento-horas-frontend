@@ -1,8 +1,26 @@
+import PrimeReact from 'primereact/api'
+
+import 'primereact/resources/themes/md-light-indigo/theme.css'
+import 'primereact/resources/primereact.min.css'
+import 'primeicons/primeicons.css'
+import 'primeflex/primeflex.css'
+
+import { GlobalStyle } from './styles/globalStyles'
+import { BrowserRouter, Switch, Route } from 'react-router-dom'
+import { Login } from './pages/Login'
+
+PrimeReact.ripple = true
+
 const App = () => {
   return (
-    <div className="App">
-      <h1>Monitoramento de horas</h1>
-    </div>
+    <>
+      <BrowserRouter>
+        <Switch>
+          <Route path="/" component={Login} />
+        </Switch>
+      </BrowserRouter>
+      <GlobalStyle />
+    </>
   )
 }
 
