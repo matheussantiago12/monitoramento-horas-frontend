@@ -8,6 +8,7 @@ import 'primeflex/primeflex.css'
 import { GlobalStyle } from './styles/globalStyles'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import { Login } from './pages/Login'
+import { Register } from './pages/Register'
 
 PrimeReact.ripple = true
 
@@ -16,6 +17,7 @@ const App = () => {
     <>
       <BrowserRouter>
         <Switch>
+          <Route path="/cadastro" exact component={Register} />
           <Route path="/" component={Login} />
         </Switch>
       </BrowserRouter>

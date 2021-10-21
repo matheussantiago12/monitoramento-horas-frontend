@@ -1,10 +1,12 @@
 import { LoginForm } from "../../forms/Login"
 import { Container } from "./styles"
 
-export const Login = () => {
+const Login = () => {
     return (
         <Container>
             <LoginForm />
         </Container>
     )
 }
+
+export { Login }
