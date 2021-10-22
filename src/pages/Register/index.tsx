@@ -1,12 +1,13 @@
-import { RegisterForm } from "../../forms/Register"
-import { Container } from "./styles"
+import React from 'react'
+import { RegisterForm } from '../../forms/Register'
+import { Container } from './styles'
 
 const Register = () => {
-    return (
+  return (
         <Container>
             <RegisterForm />
         </Container>
-    )
+  )
 }
 
 export { Register }

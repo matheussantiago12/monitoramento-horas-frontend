@@ -1,71 +1,141 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { InputText } from 'primereact/inputtext'
 import { Button } from 'primereact/button'
-import { Checkbox } from 'primereact/checkbox'
+import { Dropdown } from 'primereact/dropdown'
+import { InputNumber } from 'primereact/inputnumber'
 import { useFormik } from 'formik'
-import { LoginSchema } from './schema'
+import { RegisterSchema } from './schema'
 import { useValidateInput } from '../../hooks/useValidateInput'
 import { classNames } from 'primereact/utils'
-import { Link } from 'react-router-dom'
 import { Container } from './styles'
 
-const RegisterForm = () => {
-  const [rememberPassword, setRememberPassword] = useState(true)
+const teamOptions = [
+  { id: 1, description: 'Frontend' },
+  { id: 2, description: 'Backend' }
+]
 
+const sectorOptions = [
+  { id: 1, description: 'Desenvolvimento' },
+  { id: 2, description: 'Testes' },
+  { id: 3, description: 'RH' }
+]
+
+const typeOptions = [
+  { id: 1, description: 'Líder' },
+  { id: 2, description: 'Funcionário' }
+]
+
+const RegisterForm = () => {
   const handleSubmit = async (values: any) => {
     console.log('login', values)
   }
 
   const formik = useFormik({
     initialValues: {
-      login: '',
-      password: ''
+      name: '',
+      sector: null,
+      team: null,
+      role: '',
+      dailyWorkedHours: 0,
+      type: typeOptions[1]
     },
-    validationSchema: LoginSchema,
+    validationSchema: RegisterSchema,
     onSubmit: handleSubmit
   })
 
   const { isFormFieldValid, getFormErrorMessage } = useValidateInput(formik)
+
+  console.log(formik.values.type)
 
   return (
     <Container>
       <form onSubmit={formik.handleSubmit} style={{ marginTop: '75px' }}>
         <div className="formgrid grid">
           <h1 className="pb-5 col-10 p-text-bold text">
-            Register
+            Registro de usuário
           </h1>
           <div className="col-12 field">
             <span className="p-float-label">
               <InputText
-                id="login"
-                value={formik.values.login}
+                id="name"
+                value={formik.values.name}
                 onChange={formik.handleChange}
-                className={classNames({ 'p-invalid': isFormFieldValid('login') }, 'inputfield w-full')}
+                className={classNames({ 'p-invalid': isFormFieldValid('name') }, 'inputfield w-full')}
               />
-              <label htmlFor="login">Usuário</label>
+              <label htmlFor="login">Nome completo</label>
             </span>
-            <small className="p-error">{getFormErrorMessage('login')}</small>
+            <small className="p-error">{getFormErrorMessage('name')}</small>
           </div>
           <div className="col-12 field">
-            <span className="p-float-label">
-              <InputText
-                id="password"
-                type="password"
-                value={formik.values.password}
+              <Dropdown
+                placeholder="Tipo de usuário"
+                id="type"
+                value={formik.values.type}
+                options={typeOptions}
+                optionLabel="description"
                 onChange={formik.handleChange}
-                className={classNames({ 'p-invalid': isFormFieldValid('password') }, 'inputfield w-full')}
+                className={classNames({ 'p-invalid': isFormFieldValid('type') }, 'inputfield w-full')}
               />
-              <label htmlFor="password">Senha</label>
-            </span>
-            <small className="p-error">{getFormErrorMessage('password')}</small>
+            <small className="p-error">{getFormErrorMessage('type')}</small>
           </div>
-          <div className="field col-6 checkbox-container">
-            <Checkbox inputId="checkbox" value={rememberPassword} onChange={() => setRememberPassword(!rememberPassword)} checked={rememberPassword} />
-            <label htmlFor="checkbox" className="p-checkbox-label" style={{ marginLeft: '6px' }}>Lembrar senha</label>
-          </div>
-          <div className="field col-6 checkbox-container justify-content-end">
-            <Link to="/teste">Esqueceu a senha?</Link>
-          </div>
+          {formik.values.type.id !== 1 && (
+            <>
+              <div className="col-6 field">
+                <span className="p-float-label">
+                  <Dropdown
+                    id="sector"
+                    value={formik.values.sector}
+                    options={sectorOptions}
+                    optionValue="id"
+                    optionLabel="description"
+                    onChange={formik.handleChange}
+                    className={classNames({ 'p-invalid': isFormFieldValid('sector') }, 'inputfield w-full')}
+                  />
+                  <label htmlFor="sector">Setor</label>
+                </span>
+                <small className="p-error">{getFormErrorMessage('sector')}</small>
+              </div>
+              <div className="col-6 field">
+                <span className="p-float-label">
+                  <Dropdown
+                    id="team"
+                    value={formik.values.team}
+                    options={teamOptions}
+                    optionValue="id"
+                    optionLabel="description"
+                    onChange={formik.handleChange}
+                    className={classNames({ 'p-invalid': isFormFieldValid('team') }, 'inputfield w-full')}
+                  />
+                  <label htmlFor="team">Equipe</label>
+                </span>
+                <small className="p-error">{getFormErrorMessage('sector')}</small>
+              </div>
+              <div className="col-6 field">
+                <span className="p-float-label">
+                  <InputText
+                    id="role"
+                    value={formik.values.role}
+                    onChange={formik.handleChange}
+                    className={classNames({ 'p-invalid': isFormFieldValid('sector') }, 'inputfield w-full')}
+                  />
+                  <label htmlFor="role">Cargo</label>
+                </span>
+                <small className="p-error">{getFormErrorMessage('sector')}</small>
+              </div>
+              <div className="col-6 field">
+                <span className="p-float-label">
+                  <InputNumber
+                    id="dailyWorkedHours"
+                    value={formik.values.dailyWorkedHours}
+                    onValueChange={formik.handleChange}
+                    className={classNames({ 'p-invalid': isFormFieldValid('dailyWorkedHours') }, 'inputfield w-full')}
+                  />
+                  <label htmlFor="password">Carga horária diária</label>
+                </span>
+                <small className="p-error">{getFormErrorMessage('sector')}</small>
+              </div>
+            </>
+          )}
           <div className="field col-12">
             <Button label="Entrar" type="submit" className="w-full" />
           </div>
