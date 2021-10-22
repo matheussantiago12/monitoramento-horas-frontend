@@ -6,14 +6,16 @@ import { useFormik } from 'formik'
 import { LoginSchema } from './schema'
 import { useValidateInput } from '../../hooks/useValidateInput'
 import { classNames } from 'primereact/utils'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { Container } from './styles'
 
 export const LoginForm = () => {
   const [rememberPassword, setRememberPassword] = useState(true)
 
+  const history = useHistory()
+
   const handleSubmit = async (values: any) => {
-    console.log('login', values)
+    history.push('/cadastro')
   }
 
   const formik = useFormik({
@@ -29,7 +31,7 @@ export const LoginForm = () => {
 
   return (
     <Container>
-      <form onSubmit={formik.handleSubmit} style={{ marginTop: '75px' }}>
+      <form onSubmit={formik.handleSubmit}>
         <div className="formgrid grid">
           <h1 className="pb-5 col-10 p-text-bold text">
             Login

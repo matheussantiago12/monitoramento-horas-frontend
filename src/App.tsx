@@ -1,3 +1,4 @@
+import React from 'react'
 import PrimeReact from 'primereact/api'
 
 import 'primereact/resources/themes/md-light-indigo/theme.css'
@@ -9,6 +10,7 @@ import { GlobalStyle } from './styles/globalStyles'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import { Login } from './pages/Login'
 import { Register } from './pages/Register'
+import { PrivateRoute } from './components/PrivateRoute'
 
 PrimeReact.ripple = true
 
@@ -17,7 +19,7 @@ const App = () => {
     <>
       <BrowserRouter>
         <Switch>
-          <Route path="/cadastro" exact component={Register} />
+          <PrivateRoute path="/cadastro" exact component={Register} />
           <Route path="/" component={Login} />
         </Switch>
       </BrowserRouter>

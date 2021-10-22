@@ -33,6 +33,7 @@ const RegisterForm = () => {
   const formik = useFormik({
     initialValues: {
       name: '',
+      email: '',
       sector: null,
       team: null,
       role: '',
@@ -45,11 +46,11 @@ const RegisterForm = () => {
 
   const { isFormFieldValid, getFormErrorMessage } = useValidateInput(formik)
 
-  console.log(formik.values.type)
+  console.log(formik.errors)
 
   return (
     <Container>
-      <form onSubmit={formik.handleSubmit} style={{ marginTop: '75px' }}>
+      <form onSubmit={formik.handleSubmit}>
         <div className="formgrid grid">
           <h1 className="pb-5 col-10 p-text-bold text">
             Registro de usuário
@@ -65,6 +66,18 @@ const RegisterForm = () => {
               <label htmlFor="login">Nome completo</label>
             </span>
             <small className="p-error">{getFormErrorMessage('name')}</small>
+          </div>
+          <div className="col-12 field">
+            <span className="p-float-label">
+              <InputText
+                id="email"
+                value={formik.values.email}
+                onChange={formik.handleChange}
+                className={classNames({ 'p-invalid': isFormFieldValid('email') }, 'inputfield w-full')}
+              />
+              <label htmlFor="login">E-mail</label>
+            </span>
+            <small className="p-error">{getFormErrorMessage('email')}</small>
           </div>
           <div className="col-12 field">
               <Dropdown
@@ -108,7 +121,7 @@ const RegisterForm = () => {
                   />
                   <label htmlFor="team">Equipe</label>
                 </span>
-                <small className="p-error">{getFormErrorMessage('sector')}</small>
+                <small className="p-error">{getFormErrorMessage('team')}</small>
               </div>
               <div className="col-6 field">
                 <span className="p-float-label">
@@ -116,11 +129,11 @@ const RegisterForm = () => {
                     id="role"
                     value={formik.values.role}
                     onChange={formik.handleChange}
-                    className={classNames({ 'p-invalid': isFormFieldValid('sector') }, 'inputfield w-full')}
+                    className={classNames({ 'p-invalid': isFormFieldValid('role') }, 'inputfield w-full')}
                   />
                   <label htmlFor="role">Cargo</label>
                 </span>
-                <small className="p-error">{getFormErrorMessage('sector')}</small>
+                <small className="p-error">{getFormErrorMessage('role')}</small>
               </div>
               <div className="col-6 field">
                 <span className="p-float-label">
@@ -132,7 +145,7 @@ const RegisterForm = () => {
                   />
                   <label htmlFor="password">Carga horária diária</label>
                 </span>
-                <small className="p-error">{getFormErrorMessage('sector')}</small>
+                <small className="p-error">{getFormErrorMessage('dailyWorkedHours')}</small>
               </div>
             </>
           )}

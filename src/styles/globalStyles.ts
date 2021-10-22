@@ -7,10 +7,15 @@ export const GlobalStyle = createGlobalStyle`
         box-sizing: border-box;
         font-family: var(--font-family);
     }
+
+    html {
+        font-size: 14px;
+    }
     
     html, body {
         color: var(--text-color);
-        background-color: var(--surface-0);
+        background-color: #f9f9fa;
+        min-height: 100%;
     }
 
     .checkbox-container {

@@ -1,13 +1,13 @@
 import React from 'react'
-import { LoginForm } from '../../forms/Login'
 import { Container } from './styles'
 
-const Login = () => {
+const Topbar = () => {
   return (
     <Container>
-        <LoginForm />
+        <p>Vsf</p>
+        <p>Fdp</p>
     </Container>
   )
 }
 
-export { Login }
+export { Topbar }
