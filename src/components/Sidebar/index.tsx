@@ -12,7 +12,7 @@ const Sidebar = () => {
   return (
     <Container>
       <SidebarHeader>
-        <span>Gupelino</span>
+        <span>Logo</span>
       </SidebarHeader>
       <Menu>
         <MenuGroup>
