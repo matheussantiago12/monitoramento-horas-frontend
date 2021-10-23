@@ -1,11 +1,20 @@
 import React from 'react'
-import { Container } from './styles'
+import { Container, SidebarExpander, TopbarContent } from './styles'
 
-const Topbar = () => {
+interface ITopbarProps {
+  expandedSidebar: boolean;
+  setExpandedSidebar(value: boolean): any;
+}
+
+const Topbar = ({ expandedSidebar, setExpandedSidebar }: ITopbarProps) => {
   return (
     <Container>
-        <p>Vsf</p>
-        <p>Fdp</p>
+        <SidebarExpander onClick={() => setExpandedSidebar(!expandedSidebar)}>
+          <i className="pi pi-align-left"></i>
+        </SidebarExpander>
+        <TopbarContent>
+          Administrador
+        </TopbarContent>
     </Container>
   )
 }

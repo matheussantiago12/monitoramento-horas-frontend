@@ -9,13 +9,16 @@ export const GlobalStyle = createGlobalStyle`
     }
 
     html {
-        font-size: 14px;
+        font-size: 13px;
     }
     
     html, body {
         color: var(--text-color);
-        background-color: #f9f9fa;
-        min-height: 100%;
+        background-color: rgb(241, 245, 247);
+    }
+
+    body > #root > div {
+        min-height: 100vh;
     }
 
     .checkbox-container {
@@ -30,5 +33,10 @@ export const GlobalStyle = createGlobalStyle`
     a {
         text-decoration: none;
         color: grey;
+    }
+
+    /** Primereact theming */
+    .p-inputtext, .p-dropdown {
+        border-color: rgb(190, 190, 190) !important;
     }
 `

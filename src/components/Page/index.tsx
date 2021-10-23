@@ -1,22 +1,31 @@
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
 import { Sidebar } from '../Sidebar'
 import { Topbar } from '../Topbar'
-import { Container, StyledSidebar, StyledTopbar } from './styles'
+import { Container, Frame, PageContent, StyledSidebar, StyledTopbar } from './styles'
 
 interface IPageProps {
     component: FC
 }
 
 const Page = ({ component: Component }: IPageProps) => {
+  const [expandedSidebar, setExpandedSidebar] = useState(true)
+
   return (
       <Container>
-          <StyledSidebar>
+          <StyledSidebar expandedSidebar={expandedSidebar}>
               <Sidebar />
           </StyledSidebar>
-          <StyledTopbar>
-            <Topbar />
-          </StyledTopbar>
-          <Component />
+          <Frame>
+            <StyledTopbar>
+              <Topbar
+                expandedSidebar={expandedSidebar}
+                setExpandedSidebar={setExpandedSidebar}
+              />
+            </StyledTopbar>
+            <PageContent>
+              <Component />
+            </PageContent>
+          </Frame>
       </Container>
   )
 }

@@ -52,9 +52,6 @@ const RegisterForm = () => {
     <Container>
       <form onSubmit={formik.handleSubmit}>
         <div className="formgrid grid">
-          <h1 className="pb-5 col-10 p-text-bold text">
-            Registro de usuário
-          </h1>
           <div className="col-12 field">
             <span className="p-float-label">
               <InputText
@@ -149,8 +146,8 @@ const RegisterForm = () => {
               </div>
             </>
           )}
-          <div className="field col-12">
-            <Button label="Entrar" type="submit" className="w-full" />
+          <div className="col-12 mt-2 flex justify-content-end">
+            <Button icon="pi pi-check" label="Salvar" type="submit" />
           </div>
         </div>
       </form>
