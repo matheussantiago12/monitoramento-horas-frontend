@@ -14,7 +14,7 @@ export const GlobalStyle = createGlobalStyle`
     
     html, body {
         color: var(--text-color);
-        background-color: rgb(241, 245, 247);
+        background-color: rgb(246, 246, 248);
     }
 
     body > #root > div {
@@ -38,5 +38,9 @@ export const GlobalStyle = createGlobalStyle`
     /** Primereact theming */
     .p-inputtext, .p-dropdown {
         border-color: rgb(190, 190, 190) !important;
+    }
+
+    .p-inputnumber-input {
+        max-width: 100% !important;
     }
 `
