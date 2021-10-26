@@ -90,7 +90,7 @@ const RegisterForm = () => {
           </div>
           {formik.values.type.id !== 1 && (
             <>
-              <div className="col-6 field">
+              <div className="col-12 md:col-6 field">
                 <span className="p-float-label">
                   <Dropdown
                     id="sector"
@@ -105,7 +105,7 @@ const RegisterForm = () => {
                 </span>
                 <small className="p-error">{getFormErrorMessage('sector')}</small>
               </div>
-              <div className="col-6 field">
+              <div className="col-12 md:col-6 field">
                 <span className="p-float-label">
                   <Dropdown
                     id="team"
@@ -120,7 +120,7 @@ const RegisterForm = () => {
                 </span>
                 <small className="p-error">{getFormErrorMessage('team')}</small>
               </div>
-              <div className="col-6 field">
+              <div className="col-12 md:col-6 field">
                 <span className="p-float-label">
                   <InputText
                     id="role"
@@ -132,7 +132,7 @@ const RegisterForm = () => {
                 </span>
                 <small className="p-error">{getFormErrorMessage('role')}</small>
               </div>
-              <div className="col-6 field">
+              <div className="col-12 md:col-6 field">
                 <span className="p-float-label">
                   <InputNumber
                     id="dailyWorkedHours"
