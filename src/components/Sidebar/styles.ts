@@ -54,6 +54,7 @@ const MenuGroupItem = styled.div`
 
   span {
     font-size: 1.08em;
+
   }
 
   &:hover {

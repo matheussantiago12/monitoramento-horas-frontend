@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import {
   Container,
   Menu,
@@ -19,7 +20,7 @@ const Sidebar = () => {
           <MenuGroupTitle>MENU</MenuGroupTitle>
           <MenuGroupItem>
             <i className="pi pi-chart-bar"></i>
-            <span>Dashboard</span>
+            <span><Link to="/dashboard">Dashboard</Link></span>
           </MenuGroupItem>
           <MenuGroupItem>
             <i className="pi pi-cog"></i>
@@ -30,7 +31,7 @@ const Sidebar = () => {
           <MenuGroupTitle>CADASTROS</MenuGroupTitle>
           <MenuGroupItem>
             <i className="pi pi-user"></i>
-            <span>Usuários</span>
+            <span><Link to="/cadastro">Usuários</Link></span>
           </MenuGroupItem>
         </MenuGroup>
       </Menu>
