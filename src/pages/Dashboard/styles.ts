@@ -8,5 +8,32 @@ export const Container = styled.div`
         background-color: rgb(240, 242, 243);
         border-radius: 9px;
         margin-bottom: 20px;
+        transition: height 0.3s;
+        overflow: hidden;
     }
+
+    .dashboard-title-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 14px;
+
+        .dashboard-title {
+            font-weight: 500;
+            color: rgb(60, 67, 74);
+            font-size: 1.25em;
+            display: flex;
+            align-items: center;
+        }
+
+        .dashboard-title-filter {
+            background-color: rgb(245, 245, 247);
+            color: rgb(75, 75, 75);
+            padding: 5px;
+            padding-left: 9px;
+            padding-right: 9px;
+            border-radius: 15px;
+        }
+    }
+
 `

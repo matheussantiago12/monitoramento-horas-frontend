@@ -10,9 +10,10 @@ import 'primeflex/primeflex.css'
 import { GlobalStyle } from './styles/globalStyles'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import { Login } from './pages/Login'
-import { Register } from './pages/Register'
+import { UserRegister } from './pages/UserRegister'
 import { PrivateRoute } from './components/PrivateRoute'
 import { Dashboard } from './pages/Dashboard'
+import { UserList } from './pages/UserList'
 
 PrimeReact.ripple = true
 
@@ -21,7 +22,8 @@ const App = () => {
     <>
       <BrowserRouter>
         <Switch>
-          <PrivateRoute path="/cadastro" exact component={Register} />
+          <PrivateRoute path="/cadastro" exact component={UserRegister} />
+          <PrivateRoute path="/usuarios" exact component={UserList} />
           <PrivateRoute path="/dashboard" exact component={Dashboard} />
           <Route path="/" component={Login} />
         </Switch>

@@ -11,7 +11,7 @@ const Panel = styled.div`
 
 const PageTitle = styled.div`
   font-weight: 500;
-  color: rgb(68, 75, 82);
+  color: rgb(63, 70,77);
   margin-bottom: 18px;
   font-size: 1.45em;
 `

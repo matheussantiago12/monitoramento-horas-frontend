@@ -31,7 +31,7 @@ const Sidebar = () => {
           <MenuGroupTitle>CADASTROS</MenuGroupTitle>
           <MenuGroupItem>
             <i className="pi pi-user"></i>
-            <span><Link to="/cadastro">Usuários</Link></span>
+            <span><Link to="/usuarios">Usuários</Link></span>
           </MenuGroupItem>
         </MenuGroup>
       </Menu>
