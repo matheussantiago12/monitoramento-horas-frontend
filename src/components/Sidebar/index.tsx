@@ -18,21 +18,27 @@ const Sidebar = () => {
       <Menu>
         <MenuGroup>
           <MenuGroupTitle>MENU</MenuGroupTitle>
-          <MenuGroupItem>
-            <i className="pi pi-chart-bar"></i>
-            <span><Link to="/dashboard">Dashboard</Link></span>
-          </MenuGroupItem>
-          <MenuGroupItem>
-            <i className="pi pi-cog"></i>
-            <span>Configurações</span>
-          </MenuGroupItem>
+          <Link to="/dashboard">
+            <MenuGroupItem>
+              <i className="pi pi-chart-bar"></i>
+              <span>Dashboard</span>
+            </MenuGroupItem>
+          </Link>
+          <Link to="configuracoes">
+            <MenuGroupItem>
+              <i className="pi pi-cog"></i>
+              <span>Configurações</span>
+            </MenuGroupItem>
+          </Link>
         </MenuGroup>
         <MenuGroup>
           <MenuGroupTitle>CADASTROS</MenuGroupTitle>
-          <MenuGroupItem>
-            <i className="pi pi-user"></i>
-            <span><Link to="/usuarios">Usuários</Link></span>
-          </MenuGroupItem>
+          <Link to="/usuarios">
+            <MenuGroupItem>
+              <i className="pi pi-user"></i>
+              <span>Usuários</span>
+            </MenuGroupItem>
+          </Link>
         </MenuGroup>
       </Menu>
     </Container>

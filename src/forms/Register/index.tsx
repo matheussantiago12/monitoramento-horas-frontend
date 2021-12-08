@@ -46,8 +46,6 @@ const RegisterForm = () => {
 
   const { isFormFieldValid, getFormErrorMessage } = useValidateInput(formik)
 
-  console.log(formik.errors)
-
   return (
     <Container>
       <form onSubmit={formik.handleSubmit}>
