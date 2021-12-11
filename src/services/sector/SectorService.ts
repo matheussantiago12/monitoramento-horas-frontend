@@ -2,7 +2,7 @@ import { ISector } from './ISector'
 
 const fakeSectors: ISector[] = [
   { id: 1, descricao: 'Setor 1' },
-  { id: 1, descricao: 'Setor 2' }
+  { id: 2, descricao: 'Setor 2' }
 ]
 
 export class SectorService {

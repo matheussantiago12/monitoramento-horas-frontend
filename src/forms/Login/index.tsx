@@ -15,7 +15,7 @@ export const LoginForm = () => {
   const history = useHistory()
 
   const handleSubmit = async (values: any) => {
-    history.push('/cadastro')
+    history.push('/dashboard')
   }
 
   const formik = useFormik({

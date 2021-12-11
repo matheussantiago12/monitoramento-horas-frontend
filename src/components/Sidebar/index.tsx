@@ -39,6 +39,18 @@ const Sidebar = () => {
               <span>Usuários</span>
             </MenuGroupItem>
           </Link>
+          <Link to="/setores">
+            <MenuGroupItem>
+              <i className="pi pi-users"></i>
+              <span>Setores</span>
+            </MenuGroupItem>
+          </Link>
+          <Link to="/equipes">
+            <MenuGroupItem>
+              <i className="pi pi-users"></i>
+              <span>Equipes</span>
+            </MenuGroupItem>
+          </Link>
         </MenuGroup>
       </Menu>
     </Container>
