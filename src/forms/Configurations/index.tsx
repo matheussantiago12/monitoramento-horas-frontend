@@ -46,7 +46,7 @@ const ConfigurationsForm = () => {
           <small className="p-error">{getFormErrorMessage('minutes')}</small>
         </div>
         <div className="col-12 flex justify-content-end">
-          <Button type="submit" label="Teste" />
+          <Button icon="pi pi-check" type="submit" label="Salvar" />
         </div>
       </div>
     </form>
