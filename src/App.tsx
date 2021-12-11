@@ -1,7 +1,6 @@
 import React from 'react'
 import PrimeReact from 'primereact/api'
 
-// import 'primereact/resources/themes/md-dark-indigo/theme.css'
 import 'primereact/resources/themes/md-light-indigo/theme.css'
 import 'primereact/resources/primereact.min.css'
 import 'primeicons/primeicons.css'
@@ -24,10 +23,10 @@ const App = () => {
     <>
       <BrowserRouter>
         <Switch>
-          <PrivateRoute path="/cadastro" exact component={UserRegister} />
           <PrivateRoute path="/configuracoes" exact component={Configurations} />
           <PrivateRoute path="/usuarios" exact component={UserList} />
           <PrivateRoute path="/usuarios/:id" exact component={UserProfile} />
+          <PrivateRoute path="/usuario" exact component={UserRegister} />
           <PrivateRoute path="/dashboard" exact component={Dashboard} />
           <Route path="/" component={Login} />
         </Switch>
