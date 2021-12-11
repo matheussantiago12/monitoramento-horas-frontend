@@ -9,4 +9,8 @@ export class SectorService {
   static async getAll (): Promise<ISector[]> {
     return fakeSectors
   }
+
+  static async get (id: number) {
+    return fakeSectors.find((sector) => sector.id === id)
+  }
 }

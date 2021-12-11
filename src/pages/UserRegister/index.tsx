@@ -1,5 +1,5 @@
 import React from 'react'
-import { RegisterForm } from '../../forms/Register'
+import { UserRegisterForm } from '../../forms/UserRegister'
 import { PageTitle, Panel } from '../../styles/shared'
 import { Container } from './styles'
 
@@ -8,7 +8,7 @@ const UserRegister = () => {
     <Container>
       <PageTitle>Cadastro de usuários</PageTitle>
       <Panel>
-        <RegisterForm />
+        <UserRegisterForm />
       </Panel>
     </Container>
   )

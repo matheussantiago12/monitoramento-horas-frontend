@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { RegisterForm } from '../../forms/Register'
+import { UserRegisterForm } from '../../forms/UserRegister'
 import { IUser } from '../../services/user/IUser'
 import { UserService } from '../../services/user/UserService'
 import { PageTitle, Panel } from '../../styles/shared'
@@ -22,7 +22,7 @@ const UserProfile = () => {
     <div>
       <PageTitle>Perfil do usuário</PageTitle>
       <Panel>
-        <RegisterForm data={user} />
+        <UserRegisterForm data={user} />
       </Panel>
     </div>
   )

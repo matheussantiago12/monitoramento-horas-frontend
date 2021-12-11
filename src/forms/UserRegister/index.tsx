@@ -30,7 +30,7 @@ interface IRegisterFormProps {
   data?: IUser
 }
 
-const RegisterForm = ({ data }: IRegisterFormProps) => {
+const UserRegisterForm = ({ data }: IRegisterFormProps) => {
   const handleSubmit = async (values: any) => {
     console.log('login', values)
   }
@@ -168,4 +168,4 @@ const RegisterForm = ({ data }: IRegisterFormProps) => {
   )
 }
 
-export { RegisterForm }
+export { UserRegisterForm }
