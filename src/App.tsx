@@ -15,6 +15,7 @@ import { PrivateRoute } from './components/PrivateRoute'
 import { Dashboard } from './pages/Dashboard'
 import { UserList } from './pages/UserList'
 import { Configurations } from './pages/Configurations'
+import { UserProfile } from './pages/UserProfile'
 
 PrimeReact.ripple = true
 
@@ -26,6 +27,7 @@ const App = () => {
           <PrivateRoute path="/cadastro" exact component={UserRegister} />
           <PrivateRoute path="/configuracoes" exact component={Configurations} />
           <PrivateRoute path="/usuarios" exact component={UserList} />
+          <PrivateRoute path="/usuarios/:id" exact component={UserProfile} />
           <PrivateRoute path="/dashboard" exact component={Dashboard} />
           <Route path="/" component={Login} />
         </Switch>

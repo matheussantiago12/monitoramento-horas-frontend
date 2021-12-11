@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { InputText } from 'primereact/inputtext'
 import { Button } from 'primereact/button'
 import { Dropdown } from 'primereact/dropdown'
@@ -8,6 +8,7 @@ import { RegisterSchema } from './schema'
 import { useValidateInput } from '../../hooks/useValidateInput'
 import { classNames } from 'primereact/utils'
 import { Container } from './styles'
+import { IUser } from '../../services/user/IUser'
 
 const teamOptions = [
   { id: 1, description: 'Frontend' },
@@ -25,7 +26,11 @@ const typeOptions = [
   { id: 2, description: 'Funcionário' }
 ]
 
-const RegisterForm = () => {
+interface IRegisterFormProps {
+  data?: IUser
+}
+
+const RegisterForm = ({ data }: IRegisterFormProps) => {
   const handleSubmit = async (values: any) => {
     console.log('login', values)
   }
@@ -45,6 +50,16 @@ const RegisterForm = () => {
   })
 
   const { isFormFieldValid, getFormErrorMessage } = useValidateInput(formik)
+
+  useEffect(() => {
+    if (data) {
+      formik.setFieldValue('name', data.pessoa?.nomeCompleto)
+      formik.setFieldValue('email', data.email)
+      formik.setFieldValue('team', data.pessoa?.equipe)
+      formik.setFieldValue('role', data.pessoa?.cargo)
+      formik.setFieldValue('dailyWorkedHours', data.pessoa?.horasTrabalhoDiario)
+    }
+  }, [data])
 
   return (
     <Container>

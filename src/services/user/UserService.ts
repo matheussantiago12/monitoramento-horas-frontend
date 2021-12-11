@@ -25,4 +25,8 @@ export class UserService {
   static async getAll () {
     return fakeUsers
   }
+
+  static async get (id: number) {
+    return fakeUsers.find((user) => user.id === id)
+  }
 }
