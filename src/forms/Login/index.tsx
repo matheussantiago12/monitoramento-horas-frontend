@@ -8,14 +8,21 @@ import { useValidateInput } from '../../hooks/useValidateInput'
 import { classNames } from 'primereact/utils'
 import { Link, useHistory } from 'react-router-dom'
 import { Container } from './styles'
+import { AuthService } from '../../services/auth/AuthService'
 
 export const LoginForm = () => {
   const [rememberPassword, setRememberPassword] = useState(true)
 
   const history = useHistory()
 
-  const handleSubmit = async (values: any) => {
-    history.push('/dashboard')
+  const handleSubmit = async (values: { login: string, password: string }) => {
+    try {
+      const { token } = await AuthService.login(values.login, values.password)
+      localStorage.setItem('accessToken', token)
+      history.push('/dashboard')
+    } catch (error) {
+      alert('Usuário ou senha inválido(s)')
+    }
   }
 
   const formik = useFormik({
