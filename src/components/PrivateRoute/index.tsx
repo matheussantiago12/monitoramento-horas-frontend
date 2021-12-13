@@ -10,9 +10,9 @@ interface IPrivateRouteProps {
 
 const PrivateRoute = ({ path, exact, component }: IPrivateRouteProps) => {
   return (
-        <Route path={path} exact={exact}>
-            <Page component={component} />
-        </Route>
+    <Route path={path} exact={exact}>
+      <Page component={component} />
+    </Route>
   )
 }
 

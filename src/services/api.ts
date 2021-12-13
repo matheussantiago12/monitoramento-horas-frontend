@@ -9,6 +9,7 @@ api.interceptors.request.use((config: AxiosRequestConfig) => {
 
   if (token) {
     config.headers!.authorization = `Bearer ${token}`
+    config.headers!['Access-Control-Allow-Origin'] = '*'
   }
 
   return config

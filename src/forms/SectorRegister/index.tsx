@@ -7,14 +7,28 @@ import { useValidateInput } from '../../hooks/useValidateInput'
 import { classNames } from 'primereact/utils'
 import { Container } from './styles'
 import { ISector } from '../../services/sector/ISector'
+import { SectorService } from '../../services/sector/SectorService'
+import { useHistory } from 'react-router-dom'
 
 interface IRegisterFormProps {
   data?: ISector
 }
 
+interface IFormValues {
+  description: string
+}
+
 const SectorRegisterForm = ({ data }: IRegisterFormProps) => {
-  const handleSubmit = async (values: any) => {
-    console.log('login', values)
+  const history = useHistory()
+
+  const handleSubmit = async (values: IFormValues) => {
+    if (data) {
+      await SectorService.update({ id: data.id, descricao: values.description })
+    } else {
+      await SectorService.create({ descricao: values.description })
+    }
+
+    history.push('/setores')
   }
 
   const formik = useFormik({
