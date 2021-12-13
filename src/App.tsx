@@ -21,12 +21,13 @@ import { SectorProfile } from './pages/SectorProfile'
 import { TeamList } from './pages/TeamList'
 import { TeamProfile } from './pages/TeamProfile'
 import { TeamRegister } from './pages/TeamRegister'
+import { AuthProvider } from './context/AuthContext'
 
 PrimeReact.ripple = true
 
 const App = () => {
   return (
-    <>
+    <AuthProvider>
       <BrowserRouter>
         <Switch>
           <PrivateRoute path="/configuracoes" exact component={Configurations} />
@@ -44,7 +45,7 @@ const App = () => {
         </Switch>
       </BrowserRouter>
       <GlobalStyle />
-    </>
+    </AuthProvider>
   )
 }
 

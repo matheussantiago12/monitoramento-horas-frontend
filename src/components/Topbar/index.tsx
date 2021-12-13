@@ -1,4 +1,5 @@
 import React from 'react'
+import { useAuth } from '../../context/AuthContext'
 import { Container, SidebarExpander, TopbarContent } from './styles'
 
 interface ITopbarProps {
@@ -7,13 +8,15 @@ interface ITopbarProps {
 }
 
 const Topbar = ({ expandedSidebar, setExpandedSidebar }: ITopbarProps) => {
+  const auth = useAuth()
+
   return (
     <Container>
         <SidebarExpander onClick={() => setExpandedSidebar(!expandedSidebar)}>
           <i className="pi pi-align-left"></i>
         </SidebarExpander>
         <TopbarContent>
-          Administrador
+          {auth.user?.pessoa?.nomeCompleto}
         </TopbarContent>
     </Container>
   )

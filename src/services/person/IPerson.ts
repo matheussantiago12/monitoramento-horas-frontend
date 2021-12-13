@@ -7,4 +7,5 @@ export interface IPerson {
     horasTrabalhoDiario: number;
     equipeId: number;
     equipe?: ITeam;
+    tipoPessoaId: number;
 }

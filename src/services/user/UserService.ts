@@ -12,6 +12,7 @@ const fakeUsers: IUser[] = [
       horasTrabalhoDiario: 3,
       nomeCompleto: 'Matheus Santiago',
       equipeId: 1,
+      tipoPessoaId: 1,
       equipe: {
         id: 1,
         nome: 'Time 1',

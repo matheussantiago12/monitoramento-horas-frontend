@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { useAuth } from '../../context/AuthContext'
 import {
   Container,
   Menu,
@@ -10,6 +11,8 @@ import {
 } from './styles'
 
 const Sidebar = () => {
+  const { user } = useAuth()
+
   return (
     <Container>
       <SidebarHeader>
@@ -24,34 +27,38 @@ const Sidebar = () => {
               <span>Dashboard</span>
             </MenuGroupItem>
           </Link>
-          <Link to="configuracoes">
-            <MenuGroupItem>
-              <i className="pi pi-cog"></i>
-              <span>Configurações</span>
-            </MenuGroupItem>
-          </Link>
+          {(user?.pessoa?.tipoPessoaId === 1) && (
+            <Link to="configuracoes">
+              <MenuGroupItem>
+                <i className="pi pi-cog"></i>
+                <span>Configurações</span>
+              </MenuGroupItem>
+            </Link>
+          )}
         </MenuGroup>
-        <MenuGroup>
-          <MenuGroupTitle>CADASTROS</MenuGroupTitle>
-          <Link to="/usuarios">
-            <MenuGroupItem>
-              <i className="pi pi-user"></i>
-              <span>Usuários</span>
-            </MenuGroupItem>
-          </Link>
-          <Link to="/setores">
-            <MenuGroupItem>
-              <i className="pi pi-users"></i>
-              <span>Setores</span>
-            </MenuGroupItem>
-          </Link>
-          <Link to="/equipes">
-            <MenuGroupItem>
-              <i className="pi pi-users"></i>
-              <span>Equipes</span>
-            </MenuGroupItem>
-          </Link>
-        </MenuGroup>
+        {(user?.pessoa?.tipoPessoaId === 1) && (
+          <MenuGroup>
+            <MenuGroupTitle>CADASTROS</MenuGroupTitle>
+            <Link to="/usuarios">
+              <MenuGroupItem>
+                <i className="pi pi-user"></i>
+                <span>Usuários</span>
+              </MenuGroupItem>
+            </Link>
+            <Link to="/setores">
+              <MenuGroupItem>
+                <i className="pi pi-users"></i>
+                <span>Setores</span>
+              </MenuGroupItem>
+            </Link>
+            <Link to="/equipes">
+              <MenuGroupItem>
+                <i className="pi pi-users"></i>
+                <span>Equipes</span>
+              </MenuGroupItem>
+            </Link>
+          </MenuGroup>
+        )}
       </Menu>
     </Container>
   )

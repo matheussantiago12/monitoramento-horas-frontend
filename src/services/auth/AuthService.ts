@@ -1,4 +1,5 @@
 import { api } from '../api'
+import { IUser } from '../user/IUser'
 
 interface ILoginResponse {
   token: string;
@@ -12,5 +13,11 @@ export class AuthService {
     })
 
     return data
+  }
+
+  static async getCurrentUser () {
+    const { data } = await api.get<IUser[]>('/usuario/logado')
+
+    return data[0]
   }
 }
