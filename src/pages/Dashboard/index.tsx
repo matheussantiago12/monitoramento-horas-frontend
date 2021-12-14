@@ -55,7 +55,7 @@ const Dashboard = () => {
   }
 
   const fetchTeamsBySectorId = async (id: number) => {
-    const teams = await TeamService.findBySectorId(id)
+    const teams = await TeamService.getBySectorId(id)
     setTeamOptions(teams)
   }
 

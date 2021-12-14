@@ -9,12 +9,12 @@ import { ConfigurationService } from '../../services/configuration/Configuration
 
 const ConfigurationsForm = () => {
   const handleSubmit = async (values: any) => {
-    console.log('config', values)
+    await ConfigurationService.update(values.minutes)
   }
 
   const formik = useFormik({
     initialValues: {
-      minutes: 5
+      minutes: 0
     },
     validationSchema: ConfigurationsSchema,
     onSubmit: handleSubmit

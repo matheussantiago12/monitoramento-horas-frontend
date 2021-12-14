@@ -1,11 +1,17 @@
+import { api } from '../api'
 import { IConfiguration } from './IConfiguration'
-
-const configuration: IConfiguration = {
-  tempoLimiteOciosidade: 5
-}
 
 export class ConfigurationService {
   static async getConfiguration () {
-    return configuration
+    const { data } = await api.get<IConfiguration>('/configuracao/1')
+
+    return data
+  }
+
+  static async update (timeLimit: number) {
+    await api.put('/configuracao/1', {
+      tempoLimiteOciosidade: timeLimit,
+      pausaPeriodo: 1
+    })
   }
 }

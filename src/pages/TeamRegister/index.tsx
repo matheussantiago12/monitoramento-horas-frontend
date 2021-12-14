@@ -6,7 +6,7 @@ import { Container } from './styles'
 const TeamRegister = () => {
   return (
     <Container>
-      <PageTitle>Cadastro de setores</PageTitle>
+      <PageTitle>Cadastro de equipes</PageTitle>
       <Panel>
         <TeamRegisterForm />
       </Panel>

@@ -11,6 +11,7 @@ import { ITeam } from '../../services/team/ITeam'
 
 const TeamList = () => {
   const [teams, setTeams] = useState<ITeam[]>()
+  const [search, setSearch] = useState('')
 
   const history = useHistory()
 
@@ -18,8 +19,8 @@ const TeamList = () => {
     history.push(`/equipes/${id}`)
   }
 
-  const fetchTeams = async () => {
-    const teams = await TeamService.getAll()
+  const fetchTeams = async (search?: string) => {
+    const teams = await TeamService.getAll(search)
     setTeams(teams)
   }
 
@@ -40,10 +41,19 @@ const TeamList = () => {
         <Panel>
           <div className="formgrid grid mb-4">
             <div className="col-12 md:col-11 field">
-              <InputText placeholder="Buscar equipe" className="w-full inputfield" />
+              <InputText
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Buscar equipe"
+                className="w-full inputfield"
+              />
             </div>
             <div className="col-12 md:col-1 field">
-              <Button icon="pi pi-search" className="w-full h-full inputfield" />
+              <Button
+                icon="pi pi-search"
+                className="w-full h-full inputfield"
+                onClick={() => fetchTeams(search)}
+              />
             </div>
           </div>
           <DataTable value={teams} showGridlines={true}>

@@ -10,6 +10,10 @@ import { Container } from './styles'
 import { ISector } from '../../services/sector/ISector'
 import { SectorService } from '../../services/sector/SectorService'
 import { ITeam } from '../../services/team/ITeam'
+import { IUser } from '../../services/user/IUser'
+import { UserService } from '../../services/user/UserService'
+import { TeamService } from '../../services/team/TeamService'
+import { useHistory } from 'react-router-dom'
 
 interface IRegisterFormProps {
   data?: ITeam
@@ -17,15 +21,34 @@ interface IRegisterFormProps {
 
 const TeamRegisterForm = ({ data }: IRegisterFormProps) => {
   const [sectorOptions, setSectorOptions] = useState<ISector[]>()
+  const [leaderOptions, setLeaderOptions] = useState<IUser[]>()
+
+  const history = useHistory()
 
   const handleSubmit = async (values: any) => {
-    console.log('login', values)
+    if (data) {
+      await TeamService.update({
+        id: data.id,
+        nome: values.name,
+        pessoaLiderId: values.leader,
+        setorId: values.sector
+      })
+    } else {
+      await TeamService.create({
+        nome: values.name,
+        pessoaLiderId: values.leader,
+        setorId: values.sector
+      })
+    }
+
+    history.push('/equipes')
   }
 
   const formik = useFormik({
     initialValues: {
       name: '',
-      sector: null
+      sector: null,
+      leader: null
     },
     validationSchema: RegisterSchema,
     onSubmit: handleSubmit
@@ -39,15 +62,24 @@ const TeamRegisterForm = ({ data }: IRegisterFormProps) => {
       setSectorOptions(sectors)
     }
 
+    const fetchLeaders = async () => {
+      const leaders = await UserService.getLeaders()
+      setLeaderOptions(leaders)
+    }
+
     fetchSectors()
+    fetchLeaders()
   }, [])
 
   useEffect(() => {
     if (data) {
       formik.setFieldValue('name', data.nome)
-      formik.setFieldValue('sector', data.setor)
+      formik.setFieldValue('sector', data.setor?.id)
+      formik.setFieldValue('leader', data.pessoaLider?.id)
     }
   }, [data])
+
+  console.log(formik.values)
 
   return (
     <Container>
@@ -79,6 +111,21 @@ const TeamRegisterForm = ({ data }: IRegisterFormProps) => {
               <label htmlFor="sector">Setor</label>
             </span>
             <small className="p-error">{getFormErrorMessage('sector')}</small>
+          </div>
+          <div className="col-12 field">
+            <span className="p-float-label">
+              <Dropdown
+                id="leader"
+                value={formik.values.leader}
+                options={leaderOptions}
+                optionValue="id"
+                optionLabel="pessoa.nomeCompleto"
+                onChange={formik.handleChange}
+                className={classNames({ 'p-invalid': isFormFieldValid('leader') }, 'inputfield w-full')}
+              />
+              <label htmlFor="leader">Líder</label>
+            </span>
+            <small className="p-error">{getFormErrorMessage('leader')}</small>
           </div>
           <div className="col-12 mt-2 flex justify-content-end">
             <Button icon="pi pi-check" label="Salvar" type="submit" />
