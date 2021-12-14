@@ -9,35 +9,10 @@ import { ISector } from '../../services/sector/ISector'
 import { SectorService } from '../../services/sector/SectorService'
 import { TeamService } from '../../services/team/TeamService'
 import { ITeam } from '../../services/team/ITeam'
-import { PersonService } from '../../services/person/PersonService'
 import { IPerson } from '../../services/person/IPerson'
-
-const data = {
-  labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-  datasets: [
-    {
-      label: '# of Votes',
-      data: [12, 19, 3, 5, 2, 3],
-      backgroundColor: [
-        'rgba(255, 99, 132, 0.2)',
-        'rgba(54, 162, 235, 0.2)',
-        'rgba(255, 206, 86, 0.2)',
-        'rgba(75, 192, 192, 0.2)',
-        'rgba(153, 102, 255, 0.2)',
-        'rgba(255, 159, 64, 0.2)'
-      ],
-      borderColor: [
-        'rgba(255, 99, 132, 1)',
-        'rgba(54, 162, 235, 1)',
-        'rgba(255, 206, 86, 1)',
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255, 1)',
-        'rgba(255, 159, 64, 1)'
-      ],
-      borderWidth: 1
-    }
-  ]
-}
+import { IUser } from '../../services/user/IUser'
+import { UserService } from '../../services/user/UserService'
+import { TrackingService } from '../../services/tracking/TrackingService'
 
 const Dashboard = () => {
   const [sector, setSector] = useState<ISector>()
@@ -47,7 +22,9 @@ const Dashboard = () => {
 
   const [sectorOptions, setSectorOptions] = useState<ISector[]>()
   const [teamOptions, setTeamOptions] = useState<ITeam[]>()
-  const [personOptions, setPersonOptions] = useState<IPerson[]>()
+  const [personOptions, setPersonOptions] = useState<IUser[]>()
+
+  const [chartData, setChartData] = useState<any>()
 
   const fetchSectorOptions = async () => {
     const sectors = await SectorService.getAll()
@@ -59,9 +36,9 @@ const Dashboard = () => {
     setTeamOptions(teams)
   }
 
-  const fetchPeopleByTeamId = async (id: number) => {
-    const people = await PersonService.findByTeamId(id)
-    setPersonOptions(people)
+  const fetchPeopleByTeamId = async (_id: number) => {
+    const users = await UserService.getAll()
+    setPersonOptions(users)
   }
 
   const handleChangeSector = async (e: DropdownChangeParams) => {
@@ -86,8 +63,46 @@ const Dashboard = () => {
     setPersonOptions(undefined)
   }
 
+  const handleFilter = () => {
+    if (!sector) {
+      loadDefaultChart()
+    }
+  }
+
+  const loadDefaultChart = async () => {
+    const tracking = await TrackingService.getSectors(period)
+
+    setChartData({
+      labels: tracking.map(t => t.setor.descricao),
+      datasets: [
+        {
+          label: 'Média de tempo ocioso por setor',
+          data: tracking.map(t => t.mediaMinutosOciosos),
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)'
+          ],
+          borderColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)'
+          ],
+          borderWidth: 1
+        }
+      ]
+    })
+  }
+
   useEffect(() => {
     fetchSectorOptions()
+    loadDefaultChart()
   }, [])
 
   return (
@@ -95,7 +110,7 @@ const Dashboard = () => {
         <PageTitle>Dashboard</PageTitle>
         <Panel>
           <div className="dashboard-title-container">
-            <div className="dashboard-title">Gráfico de tempo ocioso</div>
+            <div className="dashboard-title">Média de minutos ociosos por pessoa em cada setor</div>
           </div>
           <div className="formgrid grid filter-container">
             <div className="col-4 field">
@@ -149,11 +164,13 @@ const Dashboard = () => {
               className="mr-2 p-button-outlined"
               onClick={clearFilter}
             />
-            <Button label="Filtrar" />
+            <Button label="Filtrar" onClick={handleFilter} />
           </div>
-            <Doughnut
-                data={data}
-            />
+            {chartData && (
+              <Doughnut
+                data={chartData}
+              />
+            )}
         </Panel>
     </Container>
   )
