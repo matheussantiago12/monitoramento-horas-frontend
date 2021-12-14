@@ -67,8 +67,6 @@ const UserRegisterForm = ({ data }: IRegisterFormProps) => {
     onSubmit: handleSubmit
   })
 
-  console.log(formik.errors)
-
   const { isFormFieldValid, getFormErrorMessage } = useValidateInput(formik)
 
   const handleCopyPassword = async () => {
@@ -89,7 +87,7 @@ const UserRegisterForm = ({ data }: IRegisterFormProps) => {
   const handleChangeSector = async (e: DropdownChangeParams) => {
     formik.handleChange(e)
 
-    fetchTeamsBySectorId(formik.values.sector)
+    fetchTeamsBySectorId(e.target.value)
   }
 
   useEffect(() => {
