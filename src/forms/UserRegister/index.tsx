@@ -175,53 +175,49 @@ const UserRegisterForm = ({ data }: IRegisterFormProps) => {
             />
             <small className="p-error">{getFormErrorMessage('type')}</small>
           </div>
-          {formik.values.type.id !== 2 && (
-            <>
-              <div className="col-12 md:col-6 field">
-                <span className="p-float-label">
-                  <Dropdown
-                    id="sector"
-                    value={formik.values.sector}
-                    options={sectorOptions}
-                    optionValue="id"
-                    optionLabel="descricao"
-                    onChange={handleChangeSector}
-                    className={classNames({ 'p-invalid': isFormFieldValid('sector') }, 'inputfield w-full')}
-                  />
-                  <label htmlFor="sector">Setor</label>
-                </span>
-                <small className="p-error">{getFormErrorMessage('sector')}</small>
-              </div>
-              <div className="col-12 md:col-6 field">
-                <span className="p-float-label">
-                  <Dropdown
-                    id="team"
-                    value={formik.values.team}
-                    options={teamOptions}
-                    optionValue="id"
-                    optionLabel="nome"
-                    onChange={formik.handleChange}
-                    className={classNames({ 'p-invalid': isFormFieldValid('team') }, 'inputfield w-full')}
-                    disabled={!formik.values.sector}
-                  />
-                  <label htmlFor="team">Equipe</label>
-                </span>
-                <small className="p-error">{getFormErrorMessage('team')}</small>
-              </div>
-              <div className="col-12 field">
-                <span className="p-float-label">
-                  <InputText
-                    id="role"
-                    value={formik.values.role}
-                    onChange={formik.handleChange}
-                    className={classNames({ 'p-invalid': isFormFieldValid('role') }, 'inputfield w-full')}
-                  />
-                  <label htmlFor="role">Cargo</label>
-                </span>
-                <small className="p-error">{getFormErrorMessage('role')}</small>
-              </div>
-            </>
-          )}
+          <div className="col-12 md:col-6 field">
+            <span className="p-float-label">
+              <Dropdown
+                id="sector"
+                value={formik.values.sector}
+                options={sectorOptions}
+                optionValue="id"
+                optionLabel="descricao"
+                onChange={handleChangeSector}
+                className={classNames({ 'p-invalid': isFormFieldValid('sector') }, 'inputfield w-full')}
+              />
+              <label htmlFor="sector">Setor</label>
+            </span>
+            <small className="p-error">{getFormErrorMessage('sector')}</small>
+          </div>
+          <div className="col-12 md:col-6 field">
+            <span className="p-float-label">
+              <Dropdown
+                id="team"
+                value={formik.values.team}
+                options={teamOptions}
+                optionValue="id"
+                optionLabel="nome"
+                onChange={formik.handleChange}
+                className={classNames({ 'p-invalid': isFormFieldValid('team') }, 'inputfield w-full')}
+                disabled={!formik.values.sector}
+              />
+              <label htmlFor="team">Equipe</label>
+            </span>
+            <small className="p-error">{getFormErrorMessage('team')}</small>
+          </div>
+          <div className="col-12 field">
+            <span className="p-float-label">
+              <InputText
+                id="role"
+                value={formik.values.role}
+                onChange={formik.handleChange}
+                className={classNames({ 'p-invalid': isFormFieldValid('role') }, 'inputfield w-full')}
+              />
+              <label htmlFor="role">Cargo</label>
+            </span>
+            <small className="p-error">{getFormErrorMessage('role')}</small>
+          </div>
           <div className="col-12 mt-2 flex justify-content-end">
             <Button icon="pi pi-check" label="Salvar" type="submit" />
           </div>

@@ -32,7 +32,8 @@ export class UserService {
   static async create (user: ICreateUserDTO) {
     const { data } = await api.post<IUser>('/usuario', {
       ...user,
-      cargaHorariaDiaria: 8
+      cargaHorariaDiaria: 8,
+      mudarSenha: true
     })
 
     return data
