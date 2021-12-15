@@ -15,6 +15,7 @@ import { TrackingService } from '../../services/tracking/TrackingService'
 import { DataTable } from 'primereact/datatable'
 import { Column } from 'primereact/column'
 import moment from 'moment'
+import { useAuth } from '../../context/AuthContext'
 
 const Dashboard = () => {
   const [sector, setSector] = useState<ISector>()
@@ -30,6 +31,8 @@ const Dashboard = () => {
 
   const [personTrackings, setPersonTrackings] = useState<{ tempoInicialOciosidade: number, tempoFinalOciosidade: number }[]>()
   const [personTotalTime, setPersonTotalTime] = useState<number>()
+
+  const [pageTitle, setPageTitle] = useState('')
 
   const fetchSectorOptions = async () => {
     const sectors = await SectorService.getAll()
@@ -112,6 +115,8 @@ const Dashboard = () => {
         }
       ]
     })
+
+    setPageTitle('Média de minutos ociosos por pessoa em cada setor')
   }
 
   const loadTeamsChart = async () => {
@@ -143,10 +148,12 @@ const Dashboard = () => {
         }
       ]
     })
+
+    setPageTitle('Média de minutos ociosos por pessoa em cada equipe')
   }
 
-  const loadPeopleChart = async () => {
-    const tracking = await TrackingService.getPeople(team!.id, period)
+  const loadPeopleChart = async (teamId?: number) => {
+    const tracking = await TrackingService.getPeople(teamId || team!.id, period)
 
     setChartData({
       labels: tracking.map(t => t.pessoa.nomeCompleto),
@@ -174,12 +181,16 @@ const Dashboard = () => {
         }
       ]
     })
+
+    setPageTitle('Média de minutos ociosos por pessoa')
   }
 
   const loadPersonData = async () => {
     const { rastreamentos, tempoOcioso } = await TrackingService.getPerson(person!.pessoaId, period)
     setPersonTrackings(rastreamentos)
     setPersonTotalTime(tempoOcioso)
+
+    setPageTitle(`Informações de ${rastreamentos[0]?.pessoa?.nomeCompleto}`)
   }
 
   const getTimeCardBackgroundColor = (minutes: number) => {
@@ -194,42 +205,58 @@ const Dashboard = () => {
     return '#89d0ba'
   }
 
+  const { user } = useAuth()
+
   useEffect(() => {
-    fetchSectorOptions()
-    loadDefaultChart()
-  }, [])
+    const fetch = async () => {
+      if (user?.pessoa?.tipoPessoaId === 2) {
+        setTeam(user.pessoa.equipe)
+        await fetchPeopleByTeamId(user.pessoa.equipeId)
+        loadPeopleChart(user.pessoa.equipeId)
+      } else if (user?.pessoa?.tipoPessoaId === 1) {
+        fetchSectorOptions()
+        loadDefaultChart()
+      }
+    }
+
+    fetch()
+  }, [user?.pessoa?.tipoPessoaId])
 
   return (
     <Container>
-        <PageTitle>Dashboard</PageTitle>
+        <PageTitle>Dashboard {user?.pessoa?.tipoPessoaId === 2 ? ` - Equipe ${user.pessoa.equipe?.nome}` : ''}</PageTitle>
         <Panel>
           <div className="dashboard-title-container">
-            <div className="dashboard-title">Média de minutos ociosos por pessoa em cada setor</div>
+            <div className="dashboard-title">{pageTitle}</div>
           </div>
           <div className="formgrid grid filter-container">
-            <div className="col-4 field">
-              <label htmlFor="">Setor</label>
-              <Dropdown
-                placeholder="Selecione o setor..."
-                className="w-full inputfield"
-                value={sector}
-                optionLabel="descricao"
-                options={sectorOptions}
-                onChange={handleChangeSector}
-              />
-            </div>
-            <div className="col-4 field">
-            <label htmlFor="">Equipe</label>
-              <Dropdown
-                placeholder="Selecione a equipe..."
-                className="w-full inputfield"
-                value={team}
-                optionLabel="nome"
-                options={teamOptions}
-                onChange={handleChangeTeam}
-                disabled={!sector}
-              />
-            </div>
+            {(user?.pessoa?.tipoPessoaId === 1) && (
+              <div className="col-4 field">
+                <label htmlFor="">Setor</label>
+                <Dropdown
+                  placeholder="Selecione o setor..."
+                  className="w-full inputfield"
+                  value={sector}
+                  optionLabel="descricao"
+                  options={sectorOptions}
+                  onChange={handleChangeSector}
+                />
+              </div>
+            )}
+            {(user?.pessoa?.tipoPessoaId === 1) && (
+              <div className="col-4 field">
+              <label htmlFor="">Equipe</label>
+                <Dropdown
+                  placeholder="Selecione a equipe..."
+                  className="w-full inputfield"
+                  value={team}
+                  optionLabel="nome"
+                  options={teamOptions}
+                  onChange={handleChangeTeam}
+                  disabled={!sector}
+                />
+              </div>
+            )}
             <div className="col-4 field">
             <label htmlFor="">Pessoa</label>
               <Dropdown
@@ -239,7 +266,7 @@ const Dashboard = () => {
                 optionLabel="pessoa.nomeCompleto"
                 options={personOptions}
                 onChange={e => setPerson(e.target.value)}
-                disabled={!team}
+                disabled={user?.pessoa?.tipoPessoaId === 2 ? false : !team}
               />
             </div>
             <div className="col-12 field">
@@ -253,17 +280,26 @@ const Dashboard = () => {
             </div>
           </div>
           <div className="flex justify-content-end">
-            <Button
-              label="Limpar"
-              className="mr-2 p-button-outlined"
-              onClick={clearFilter}
-            />
+            {user?.pessoa?.tipoPessoaId === 1 && (
+              <Button
+                label="Limpar"
+                className="mr-2 p-button-outlined"
+                onClick={clearFilter}
+              />
+            )}
             <Button label="Filtrar" onClick={handleFilter} />
           </div>
             {(!personTrackings && chartData) && (
-              <Doughnut
-                data={chartData}
-              />
+              <div style={{
+                width: '50%',
+                marginLeft: 'auto',
+                marginRight: 'auto',
+                marginTop: '75px'
+              }}>
+                <Doughnut
+                  data={chartData}
+                />
+              </div>
             )}
             {personTrackings && (
               <>
@@ -283,7 +319,7 @@ const Dashboard = () => {
                     body={(data) => moment(data.tempoFinalOciosidade).format('DD/MM/YYYY - HH:mm')}
                   />
                   <Column
-                    header="Tempo"
+                    header="Tempo (minutos)"
                     body={(data) => {
                       const minutes = moment(data.tempoFinalOciosidade).diff(data.tempoInicialOciosidade, 'minutes')
                       return (

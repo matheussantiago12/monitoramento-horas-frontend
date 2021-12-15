@@ -24,6 +24,7 @@ interface ITrackingPerson {
   rastreamentos: {
     tempoInicialOciosidade: number
     tempoFinalOciosidade: number
+    pessoa: IPerson
   }[]
 }
 
