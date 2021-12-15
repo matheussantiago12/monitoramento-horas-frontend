@@ -320,6 +320,7 @@ const Dashboard = () => {
                   />
                   <Column
                     header="Tempo (minutos)"
+                    style={{ textAlign: 'center' }}
                     body={(data) => {
                       const minutes = moment(data.tempoFinalOciosidade).diff(data.tempoInicialOciosidade, 'minutes')
                       return (

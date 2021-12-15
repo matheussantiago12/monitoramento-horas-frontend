@@ -16,8 +16,8 @@ export class AuthService {
   }
 
   static async getCurrentUser () {
-    const { data } = await api.get<IUser[]>('/usuario/logado')
+    const { data } = await api.get<IUser>('/usuario/logado')
 
-    return data[0]
+    return data
   }
 }

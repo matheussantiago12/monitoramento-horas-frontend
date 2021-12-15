@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { PageTitle, Panel } from '../../styles/shared'
 import { Container } from './styles'
 import { DataTable } from 'primereact/datatable'
@@ -8,11 +8,14 @@ import { IUser } from '../../services/user/IUser'
 import { Button } from 'primereact/button'
 import { useHistory } from 'react-router-dom'
 import { InputText } from 'primereact/inputtext'
+import Swal from 'sweetalert2'
+import { Toast } from 'primereact/toast'
 
 const UserList = () => {
   const [users, setUsers] = useState<IUser[]>()
 
   const history = useHistory()
+  const toast = useRef<any>(null)
 
   const handleEditClick = (id: number) => {
     history.push(`/usuarios/${id}`)
@@ -27,12 +30,47 @@ const UserList = () => {
     history.push('/usuario')
   }
 
+  const handleDelete = async (id: number) => {
+    const { isConfirmed } = await Swal.fire({
+      title: 'Você tem certeza que deseja excluir este usuário?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: 'rgb(63,81,181)',
+      cancelButtonColor: 'rgb(211,47,47)',
+      confirmButtonText: 'Sim',
+      cancelButtonText: 'Cancelar'
+    })
+
+    if (isConfirmed) {
+      try {
+        await UserService.delete(id)
+
+        setUsers(users?.filter((user) => user.id !== id))
+
+        toast.current!.show({
+          severity: 'success',
+          summary: 'Sucesso!',
+          detail: 'Usuário excluído com sucesso!',
+          life: 2500
+        })
+      } catch (error) {
+        toast.current!.show({
+          severity: 'error',
+          summary: 'Erro!',
+          detail: 'Não é possível excluir este usuário pois ele já está sendo utilizado!',
+          life: 2500
+        })
+      }
+    }
+  }
+
   useEffect(() => {
     fetchUsers()
   }, [])
 
   return (
       <Container>
+        <Toast ref={toast} />
         <PageTitle style={{ width: '100%' }} className="flex align-items-center justify-content-between">
           <span>Lista de usuários</span>
           <Button icon="pi pi-plus" label="Novo" onClick={handleClickRegister} />
@@ -74,11 +112,11 @@ const UserList = () => {
               style={{ width: '7.5%', textAlign: 'center' }}
               field=""
               header=""
-              body={() => (
+              body={(data) => (
                 <Button
                   className="p-button-danger"
                   icon="pi pi-trash"
-                  onClick={() => alert('Teste')}
+                  onClick={() => handleDelete(data.id)}
                 />
               )}
               />

@@ -59,7 +59,7 @@ const SectorList = () => {
         toast.current!.show({
           severity: 'error',
           summary: 'Erro!',
-          detail: 'Houve um erro inesperado, teste mais tarde',
+          detail: 'Não é possível excluir este setor pois ele já está sendo utilizado!',
           life: 2500
         })
       }

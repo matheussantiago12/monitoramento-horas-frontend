@@ -1,29 +1,6 @@
 import { api } from '../api'
 import { IUser } from './IUser'
 
-// const fakeUsers: IUser[] = [
-//   {
-//     id: 1,
-//     email: 'teste@gmail.com',
-//     senha: '123456',
-//     pessoaId: 1,
-//     pessoa: {
-//       id: 1,
-//       cargo: 'Cargo',
-//       horasTrabalhoDiario: 3,
-//       nomeCompleto: 'Matheus Santiago',
-//       equipeId: 1,
-//       tipoPessoaId: 1,
-//       equipe: {
-//         id: 1,
-//         nome: 'Time 1',
-//         setorId: 1,
-//         pessoaLiderId: 1
-//       }
-//     }
-//   }
-// ]
-
 interface ICreateUserDTO {
   email: string
   senha: string
@@ -53,7 +30,10 @@ export class UserService {
   }
 
   static async create (user: ICreateUserDTO) {
-    const { data } = await api.post<IUser>('/usuario', user)
+    const { data } = await api.post<IUser>('/usuario', {
+      ...user,
+      cargaHorariaDiaria: 8
+    })
 
     return data
   }
@@ -69,6 +49,12 @@ export class UserService {
 
   static async getByTeamId (id: number) {
     const { data } = await api.get<IUser[]>(`/usuario/buscar-equipe/${id}`)
+
+    return data
+  }
+
+  static async delete (id: number) {
+    const { data } = await api.delete(`/usuario/${id}`)
 
     return data
   }

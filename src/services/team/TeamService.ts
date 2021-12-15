@@ -44,4 +44,10 @@ export class TeamService {
 
     return data
   }
+
+  static async delete (id: number) {
+    const { data } = await api.delete(`/equipe/${id}`)
+
+    return data
+  }
 }

@@ -14,6 +14,7 @@ import { ITeam } from '../../services/team/ITeam'
 import { TeamService } from '../../services/team/TeamService'
 import { SectorService } from '../../services/sector/SectorService'
 import { UserService } from '../../services/user/UserService'
+import { useHistory } from 'react-router-dom'
 
 const typeOptions = [
   { id: 2, description: 'Líder' },
@@ -29,6 +30,7 @@ const UserRegisterForm = ({ data }: IRegisterFormProps) => {
   const [sectorOptions, setSectorOptions] = useState<ISector[]>()
 
   const toast = useRef<any>(null)
+  const history = useHistory()
 
   const handleSubmit = async (values: any) => {
     if (data) {
@@ -51,6 +53,8 @@ const UserRegisterForm = ({ data }: IRegisterFormProps) => {
         tipoPessoaId: values.type.id
       })
     }
+
+    history.push('/usuarios')
   }
 
   const formik = useFormik({
