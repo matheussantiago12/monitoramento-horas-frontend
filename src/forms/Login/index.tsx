@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { InputText } from 'primereact/inputtext'
 import { Button } from 'primereact/button'
 import { Checkbox } from 'primereact/checkbox'
@@ -6,13 +6,11 @@ import { useFormik } from 'formik'
 import { LoginSchema } from './schema'
 import { useValidateInput } from '../../hooks/useValidateInput'
 import { classNames } from 'primereact/utils'
-import { Link, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { Container } from './styles'
 import { AuthService } from '../../services/auth/AuthService'
 
 export const LoginForm = () => {
-  const [rememberPassword, setRememberPassword] = useState(true)
-
   const history = useHistory()
 
   const handleSubmit = async (values: { login: string, password: string }) => {
@@ -69,11 +67,8 @@ export const LoginForm = () => {
             <small className="p-error">{getFormErrorMessage('password')}</small>
           </div>
           <div className="field col-6 checkbox-container">
-            <Checkbox inputId="checkbox" value={rememberPassword} onChange={() => setRememberPassword(!rememberPassword)} checked={rememberPassword} />
+            <Checkbox inputId="checkbox" value={true} checked={true} />
             <label htmlFor="checkbox" className="p-checkbox-label" style={{ marginLeft: '6px' }}>Lembrar senha</label>
-          </div>
-          <div className="field col-6 checkbox-container justify-content-end">
-            <Link to="/teste">Esqueceu a senha?</Link>
           </div>
           <div className="field col-12">
             <Button label="Entrar" type="submit" className="w-full" />
