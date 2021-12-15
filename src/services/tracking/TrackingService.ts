@@ -1,10 +1,30 @@
 import { api } from '../api'
 import { ISector } from '../sector/ISector'
 import moment from 'moment'
+import { ITeam } from '../team/ITeam'
+import { IPerson } from '../person/IPerson'
 
 interface ITrackingSectors {
-    mediaMinutosOciosos: number
-    setor: ISector
+  mediaMinutosOciosos: number
+  setor: ISector
+}
+
+interface ITrackingTeams {
+  mediaMinutosOciosos: number
+  equipe: ITeam
+}
+
+interface ITrackingPeople {
+  tempoOcioso: number
+  pessoa: IPerson
+}
+
+interface ITrackingPerson {
+  tempoOcioso: number
+  rastreamentos: {
+    tempoInicialOciosidade: number
+    tempoFinalOciosidade: number
+  }[]
 }
 
 const getDates = (period: string) => {
@@ -50,6 +70,24 @@ const getDates = (period: string) => {
 export class TrackingService {
   static async getSectors (period: string) {
     const { data } = await api.get<ITrackingSectors[]>(`/rastreamento/dashboard${getDates(period)}`)
+
+    return data
+  }
+
+  static async getTeams (sectorId: number, period: string) {
+    const { data } = await api.get<ITrackingTeams[]>(`/rastreamento/dashboard/PorSetor${getDates(period)}&setorId=${sectorId}`)
+
+    return data
+  }
+
+  static async getPeople (teamId: number, period: string) {
+    const { data } = await api.get<ITrackingPeople[]>(`/rastreamento/dashboard/PorEquipe${getDates(period)}&equipeId=${teamId}`)
+
+    return data
+  }
+
+  static async getPerson (personId: number, period: string) {
+    const { data } = await api.get<ITrackingPerson>(`/rastreamento/dashboard/PorPessoa${getDates(period)}&pessoaId=${personId}`)
 
     return data
   }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { PageTitle, Panel } from '../../styles/shared'
-import { Container } from './styles'
+import { Container, TimeCard } from './styles'
 import { Doughnut } from 'react-chartjs-2'
 import { Button } from 'primereact/button'
 import { Dropdown, DropdownChangeParams } from 'primereact/dropdown'
@@ -9,15 +9,17 @@ import { ISector } from '../../services/sector/ISector'
 import { SectorService } from '../../services/sector/SectorService'
 import { TeamService } from '../../services/team/TeamService'
 import { ITeam } from '../../services/team/ITeam'
-import { IPerson } from '../../services/person/IPerson'
 import { IUser } from '../../services/user/IUser'
 import { UserService } from '../../services/user/UserService'
 import { TrackingService } from '../../services/tracking/TrackingService'
+import { DataTable } from 'primereact/datatable'
+import { Column } from 'primereact/column'
+import moment from 'moment'
 
 const Dashboard = () => {
   const [sector, setSector] = useState<ISector>()
   const [team, setTeam] = useState<ITeam>()
-  const [person, setPerson] = useState<IPerson>()
+  const [person, setPerson] = useState<IUser>()
   const [period, setPeriod] = useState<string>('1 semana')
 
   const [sectorOptions, setSectorOptions] = useState<ISector[]>()
@@ -25,6 +27,9 @@ const Dashboard = () => {
   const [personOptions, setPersonOptions] = useState<IUser[]>()
 
   const [chartData, setChartData] = useState<any>()
+
+  const [personTrackings, setPersonTrackings] = useState<{ tempoInicialOciosidade: number, tempoFinalOciosidade: number }[]>()
+  const [personTotalTime, setPersonTotalTime] = useState<number>()
 
   const fetchSectorOptions = async () => {
     const sectors = await SectorService.getAll()
@@ -36,8 +41,8 @@ const Dashboard = () => {
     setTeamOptions(teams)
   }
 
-  const fetchPeopleByTeamId = async (_id: number) => {
-    const users = await UserService.getAll()
+  const fetchPeopleByTeamId = async (id: number) => {
+    const users = await UserService.getByTeamId(id)
     setPersonOptions(users)
   }
 
@@ -58,14 +63,23 @@ const Dashboard = () => {
     setTeam(undefined)
     setPerson(undefined)
     setPeriod('1 semana')
-    setSectorOptions(undefined)
-    setTeamOptions(undefined)
-    setPersonOptions(undefined)
   }
 
   const handleFilter = () => {
     if (!sector) {
       loadDefaultChart()
+    }
+
+    if (sector && !team && !person) {
+      loadTeamsChart()
+    }
+
+    if (team && !person) {
+      loadPeopleChart()
+    }
+
+    if (person) {
+      loadPersonData()
     }
   }
 
@@ -98,6 +112,86 @@ const Dashboard = () => {
         }
       ]
     })
+  }
+
+  const loadTeamsChart = async () => {
+    const tracking = await TrackingService.getTeams(sector!.id, period)
+
+    setChartData({
+      labels: tracking.map(t => t.equipe.nome),
+      datasets: [
+        {
+          label: 'Média de tempo ocioso por equipe',
+          data: tracking.map(t => t.mediaMinutosOciosos),
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)'
+          ],
+          borderColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)'
+          ],
+          borderWidth: 1
+        }
+      ]
+    })
+  }
+
+  const loadPeopleChart = async () => {
+    const tracking = await TrackingService.getPeople(team!.id, period)
+
+    setChartData({
+      labels: tracking.map(t => t.pessoa.nomeCompleto),
+      datasets: [
+        {
+          label: 'Média de tempo ocioso por equipe',
+          data: tracking.map(t => t.tempoOcioso),
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)'
+          ],
+          borderColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)'
+          ],
+          borderWidth: 1
+        }
+      ]
+    })
+  }
+
+  const loadPersonData = async () => {
+    const { rastreamentos, tempoOcioso } = await TrackingService.getPerson(person!.pessoaId, period)
+    setPersonTrackings(rastreamentos)
+    setPersonTotalTime(tempoOcioso)
+  }
+
+  const getTimeCardBackgroundColor = (minutes: number) => {
+    if (minutes > 59) {
+      return '#ffa8b6'
+    }
+
+    if (minutes > 14) {
+      return '#b5d1ff'
+    }
+
+    return '#89d0ba'
   }
 
   useEffect(() => {
@@ -142,7 +236,7 @@ const Dashboard = () => {
                 placeholder="Selecione a pessoa..."
                 className="w-full inputfield"
                 value={person}
-                optionLabel="nomeCompleto"
+                optionLabel="pessoa.nomeCompleto"
                 options={personOptions}
                 onChange={e => setPerson(e.target.value)}
                 disabled={!team}
@@ -166,10 +260,41 @@ const Dashboard = () => {
             />
             <Button label="Filtrar" onClick={handleFilter} />
           </div>
-            {chartData && (
+            {(!personTrackings && chartData) && (
               <Doughnut
                 data={chartData}
               />
+            )}
+            {personTrackings && (
+              <>
+                <h2 style={{ marginBottom: '26px' }}>
+                  Tempo total no período:&nbsp;
+                  <span style={{ fontWeight: 400 }}>{moment.utc(Number(personTotalTime) * 60000).format('HH:mm:ss')}</span>
+                </h2>
+                <DataTable value={personTrackings}>
+                  <Column
+                    header="Horário início ociosidade"
+                    field="tempoInicialOciosidade"
+                    body={(data) => moment(data.tempoInicialOciosidade).format('DD/MM/YYYY - HH:mm')}
+                  />
+                  <Column
+                    header="Horário final ociosidade"
+                    field="tempoFinalOciosidade"
+                    body={(data) => moment(data.tempoFinalOciosidade).format('DD/MM/YYYY - HH:mm')}
+                  />
+                  <Column
+                    header="Tempo"
+                    body={(data) => {
+                      const minutes = moment(data.tempoFinalOciosidade).diff(data.tempoInicialOciosidade, 'minutes')
+                      return (
+                        <TimeCard backgroundColor={getTimeCardBackgroundColor(minutes)}>
+                          {minutes}
+                        </TimeCard>
+                      )
+                    }}
+                  />
+                </DataTable>
+              </>
             )}
         </Panel>
     </Container>

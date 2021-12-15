@@ -35,5 +35,13 @@ export const Container = styled.div`
             border-radius: 15px;
         }
     }
+`
 
+export const TimeCard = styled.span<{ backgroundColor?: string }>`
+    background-color: ${props => props.backgroundColor || 'white'};
+    padding: 3px;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-radius: 5px;
+    color: black;
 `

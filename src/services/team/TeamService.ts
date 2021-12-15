@@ -40,7 +40,7 @@ export class TeamService {
   }
 
   static async getBySectorId (id: number) {
-    const { data } = await api.get<ITeam[]>('/equipe')
+    const { data } = await api.get<ITeam[]>(`/equipe/buscar-setor/${id}`)
 
     return data
   }

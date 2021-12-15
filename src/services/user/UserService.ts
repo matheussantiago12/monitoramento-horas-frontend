@@ -66,4 +66,10 @@ export class UserService {
 
     return data
   }
+
+  static async getByTeamId (id: number) {
+    const { data } = await api.get<IUser[]>(`/usuario/buscar-equipe/${id}`)
+
+    return data
+  }
 }
