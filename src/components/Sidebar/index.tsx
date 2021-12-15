@@ -11,12 +11,12 @@ import {
 } from './styles'
 
 const Sidebar = () => {
-  const { user } = useAuth()
+  const { user, logout } = useAuth()
 
   return (
     <Container>
       <SidebarHeader>
-        <span>Logo</span>
+        <span></span>
       </SidebarHeader>
       <Menu>
         <MenuGroup>
@@ -59,6 +59,10 @@ const Sidebar = () => {
             </Link>
           </MenuGroup>
         )}
+        <MenuGroupItem style={{ marginLeft: '20px', marginTop: '25px' }} onClick={logout}>
+          <i className="pi pi-power-off"></i>
+          <span>Sair</span>
+        </MenuGroupItem>
       </Menu>
     </Container>
   )

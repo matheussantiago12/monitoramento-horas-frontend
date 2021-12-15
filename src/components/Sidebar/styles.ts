@@ -24,6 +24,8 @@ const SidebarHeader = styled.div`
 
 const Menu = styled.div`
   height: calc(100% - 60px);
+  display: flex;
+  flex-direction: column;
 `
 
 const MenuGroup = styled.div`
